@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,17 +20,21 @@ public class Transfer {
 	private String description;
 	private String payeeId;
 	private String payerId;
+	private Account payeeAccount;
+	private Account payerAccount;
 	public boolean executed; //true if executed, false if cancelled
 	private int year; //year the transfer occured
 	private int month; //month the transfer occured
 	private int day; //day the transfer occured
-	public Transfer(String t, int a, String d, String payee,String payer, boolean e,
-			int y, int m, int day){
+	public Transfer(String t, int a, String d, String payeeId, String payerId,
+			Account payee, Account payer, boolean e,int y, int m, int day){
 		transferId = t;
 		amount = a;
 		description = d;
-		payeeId = payee;
-		payerId = payer;
+		this.payeeId = payeeId;
+		this.payerId = payerId;
+		payeeAccount = payee;
+		payerAccount = payer;
 		executed = e;
 		year = y;
 		month = m;
@@ -49,7 +54,7 @@ public class Transfer {
 	
 	
 	
-	public static ArrayList<Transfer> createList(URL url) throws IOException{
+	public static ArrayList<Transfer> createList(URL url, HashMap<String,Account> accountMap) throws IOException{
 		URLConnection myURLConnection = url.openConnection();
 		try {
 			myURLConnection.connect();
@@ -59,7 +64,7 @@ public class Transfer {
 		BufferedReader in = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
 		String jsonText = readAll(in);
 		JSONObject json = new JSONObject(jsonText);
-		return createList(json);
+		return createList(json, accountMap);
 	}
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
@@ -70,7 +75,7 @@ public class Transfer {
 		return sb.toString();
 	}
 	
-	public static ArrayList<Transfer> createList(JSONObject json){
+	public static ArrayList<Transfer> createList(JSONObject json, HashMap<String,Account> accountMap){
 		JSONArray ja = json.getJSONArray("results");
 		ArrayList<Transfer> a = new ArrayList<>();
 		for (int i = 0; i < ja.length(); i++) {
@@ -80,15 +85,18 @@ public class Transfer {
 			String dis = temp.getString("description");
 			String payee = temp.getString("payee_id");
 			String payer = temp.getString("payer_id");
+			Account payees = accountMap.get(payee);
+			Account payers = accountMap.get(payer);
 			boolean ex = ("executed"== temp.getString("status"));
 			String date = temp.getString("transaction_date");
 			int y = Integer.parseInt(date.substring(0, 3));
 			int m = Integer.parseInt(date.substring(5,6));
 			int day = Integer.parseInt(date.substring(8,9));
-			a.add(new Transfer(id,am,dis,payee,payer,ex,y,m,day));
+			a.add(new Transfer(id,am,dis,payee,payer,payees,payers,ex,y,m,day));
 		}
 		return a;
 	}
+	
 	
 	
 }
