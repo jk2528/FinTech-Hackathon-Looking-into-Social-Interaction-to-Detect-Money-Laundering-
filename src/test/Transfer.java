@@ -36,6 +36,19 @@ public class Transfer {
 		this.day = day;
 	}
 	
+	//Get Methods
+	public String getTransferId() {return transferId;}
+	public int getAmount() {return amount;}
+	public String getDescription() {return description;}
+	public String getPayeeId() {return payeeId;}
+	public String getPayerId() {return payerId;}
+	public boolean isExecuted() {return executed;}
+	public int getYear() {return year;}
+	public int getMonth() {return month;}
+	public int getDay() {return day;}
+	
+	
+	
 	public static ArrayList<Transfer> createList(URL url) throws IOException{
 		URLConnection myURLConnection = url.openConnection();
 		try {
