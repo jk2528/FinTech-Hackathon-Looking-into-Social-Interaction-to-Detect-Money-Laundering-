@@ -25,14 +25,21 @@ public class Test {
 			BufferedReader in = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
 			String jsonText = readAll(in);
 			JSONObject json = new JSONObject(jsonText);
-			HashMap<String,Account> a = Account.createMap(json);
-			
-			
-			for(Object x:a.keySet().toArray()){
-				System.out.println(((Account)(a.get(x))).getNickname());
-				
+			HashMap<String, Account> a = Account.createMap(json);
+			ArrayList<Transfer> b = Transfer.createList(
+					new URL("http://api.reimaginebanking.com/enterprise/transfers?key=358d729f3e85f5d73acd2790b0ae32b6"),
+					a);
+			/*
+			for (Object x : a.keySet().toArray()) {
+				System.out.println(((Account) (a.get(x))).getNickname());
+
 			}
+			*/
 			
+			for (Object x : b) {
+				System.out.println(((Account) (a.get(x))).getNickname());
+
+			}
 
 		} catch (
 
