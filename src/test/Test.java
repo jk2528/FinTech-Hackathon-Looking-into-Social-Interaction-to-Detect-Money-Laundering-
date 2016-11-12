@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 
@@ -24,38 +25,18 @@ public class Test {
 			BufferedReader in = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
 			String jsonText = readAll(in);
 			JSONObject json = new JSONObject(jsonText);
-			JSONArray ja = json.getJSONArray("results");
-			ArrayList<Account> a = new ArrayList<>();
-			for (int i = 0; i < ja.length(); i++) {
-				JSONObject temp = ja.getJSONObject(i);
-				String id = temp.getString("_id");
-				int bal = temp.getInt("balance");
-				String c_id = temp.getString("customer_id");
-				String nickname = temp.getString("nickname");
-				int rewards = temp.getInt("rewards");
-				String type = temp.getString("type");
-				Type t = null;
-				switch (type) {
-				case "savings":
-					t = Type.SAVINGS;
-					break;
-				case "checking":
-					t = Type.CHECKING;
-					break;
-				case "credit_card":
-					t = Type.CREDIT_CARD;
-					break;
-				}
-
-				a.add(new Account(id, bal, c_id, nickname, rewards, t));
+			HashMap<String,Account> a = Account.createMap(json);
+			
+			
+			for(Object x:a.keySet().toArray()){
+				System.out.println(((Account)(a.get(x))).getNickname());
+				
 			}
-			System.out.println(ja.getJSONObject(0).get("nickname"));
-			// String inputLine;
-			/*
-			 * while ((inputLine = in.readLine()) != null)
-			 * System.out.println(inputLine); in.close();
-			 */
-		} catch (MalformedURLException e) {
+			
+
+		} catch (
+
+		MalformedURLException e) {
 			// new URL() failed
 			// ...
 		} catch (IOException e) {

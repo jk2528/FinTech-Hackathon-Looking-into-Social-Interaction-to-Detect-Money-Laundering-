@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.net.URL;
 import java.net.URLConnection;
 import org.json.*;
@@ -30,6 +31,11 @@ public class Account {
 	private int rewards;
 	private Type type; 
 	public enum Type {CREDIT_CARD,SAVINGS,CHECKING};
+	private int count;
+	
+	public int getCount(){
+		return count;
+	}
 	
 	public String getAccountId(){
 		return accountId;
@@ -49,7 +55,7 @@ public class Account {
 	public Type getType(){
 		return type;
 	}
-	public static ArrayList<Account> createList(URL url) throws IOException{
+	public static HashMap<String,Account> createMap(URL url) throws IOException{
 		URLConnection myURLConnection = url.openConnection();
 		try {
 			myURLConnection.connect();
@@ -59,7 +65,7 @@ public class Account {
 		BufferedReader in = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
 		String jsonText = readAll(in);
 		JSONObject json = new JSONObject(jsonText);
-		return createList(json);
+		return createMap(json);
 	}
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
@@ -69,9 +75,9 @@ public class Account {
 		}
 		return sb.toString();
 	}
-	public static ArrayList<Account> createList(JSONObject json){
+	public static HashMap<String,Account> createMap(JSONObject json){
 		JSONArray ja = json.getJSONArray("results");
-		ArrayList<Account> a = new ArrayList<>();
+		HashMap<String,Account> a = new HashMap<>();
 		for (int i = 0; i < ja.length(); i++) {
 			JSONObject temp = ja.getJSONObject(i);
 			String id = temp.getString("_id");
@@ -92,8 +98,7 @@ public class Account {
 				t = Type.CREDIT_CARD;
 				break;
 			}
-
-			a.add(new Account(id, bal, c_id, nickname, rewards, t));
+			a.put(id,new Account(id, bal, c_id, nickname, rewards, t));
 		}
 		return a;
 	}
