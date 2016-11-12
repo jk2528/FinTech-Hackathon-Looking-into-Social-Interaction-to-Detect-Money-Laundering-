@@ -1,5 +1,6 @@
 package test;
 
+	// TODO: Fields here 
 public class Account {
 	private String accountId;
 	private int balance;
@@ -8,7 +9,6 @@ public class Account {
 	private int rewards;
 	private Type type; 
 	public enum Type {CREDIT_CARD,SAVINGS,CHECKING};
-	
 	
 	public String getAccountId(){
 		return accountId;
