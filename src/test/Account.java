@@ -55,6 +55,7 @@ public class Account {
 	public Type getType(){
 		return type;
 	}
+	
 	public static HashMap<String,Account> createMap(URL url) throws IOException{
 		URLConnection myURLConnection = url.openConnection();
 		try {

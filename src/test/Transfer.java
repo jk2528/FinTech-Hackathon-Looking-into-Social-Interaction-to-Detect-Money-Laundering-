@@ -40,9 +40,6 @@ public class Transfer {
 		month = m;
 		this.day = day;
 	}
-<<<<<<< HEAD
-
-=======
 	
 	//Get Methods
 	public String getTransferId() {return transferId;}
@@ -102,5 +99,4 @@ public class Transfer {
 	
 	
 	
->>>>>>> e0d7f0a29756cc21360088b9d58d6554d30c9f53
 }
