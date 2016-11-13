@@ -38,9 +38,8 @@ public class Test {
 			}
 			*/
 			
-			
-			for (Object x : b) {
-				System.out.println(((Account) (a.get(x))).getNickname());
+			for (Transfer x : b) {
+				System.out.println(x.getDescription());
 
 			}
 

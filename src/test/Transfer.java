@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import test.Account.Type;
 
 public class Transfer {
 	private String transferId;
-	private int amount;
+	private double amount;
 	private String description;
 	private String payeeId;
 	private String payerId;
@@ -26,7 +27,7 @@ public class Transfer {
 	private int year; //year the transfer occured
 	private int month; //month the transfer occured
 	private int day; //day the transfer occured
-	public Transfer(String t, int a, String d, String payeeId, String payerId,
+	public Transfer(String t, double a, String d, String payeeId, String payerId,
 			Account payee, Account payer, boolean e,int y, int m, int day){
 		transferId = t;
 		amount = a;
@@ -43,7 +44,7 @@ public class Transfer {
 	
 	//Get Methods
 	public String getTransferId() {return transferId;}
-	public int getAmount() {return amount;}
+	public double getAmount() {return amount;}
 	public String getDescription() {return description;}
 	public String getPayeeId() {return payeeId;}
 	public String getPayerId() {return payerId;}
@@ -81,21 +82,36 @@ public class Transfer {
 		for (int i = 0; i < ja.length(); i++) {
 			JSONObject temp = ja.getJSONObject(i);
 			String id = temp.getString("_id");
-			int am = temp.getInt("amount");
-			String dis = temp.getString("description");
+			double am = 0.01;
+			try{
+				am = temp.getDouble("amount");
+			}catch(JSONException e){
+			}
+			String dis = "";
+			try{
+				dis = temp.getString("description");
+		
+			}catch (JSONException e){
+				
+			}
 			String payee = temp.getString("payee_id");
 			String payer = temp.getString("payer_id");
 			Account payees = accountMap.get(payee);
 			Account payers = accountMap.get(payer);
 			boolean ex = ("executed"== temp.getString("status"));
-			String date = temp.getString("transaction_date");
-			int y = Integer.parseInt(date.substring(0, 3));
-			int m = Integer.parseInt(date.substring(5,6));
-			int day = Integer.parseInt(date.substring(8,9));
+			int y = -1;
+			int m = -1;
+			int day = -1;
+			try{
+				String date = temp.getString("transaction_date");
+				y = Integer.parseInt(date.substring(0, 3));
+				m = Integer.parseInt(date.substring(5,6));
+				day = Integer.parseInt(date.substring(8,9));
+			}catch (Exception e){
+				
+			}
 			a.add(new Transfer(id,am,dis,payee,payer,payees,payers,ex,y,m,day));
 		}
 		return a;
 	}
-	
-
 }
