@@ -38,9 +38,19 @@ public class Customer {
 	private String street_name;
 	
 
+	public String getCustomer_id() {return customer_id;}
+	public String getfirst_name() {return first_name;}
+	public ArrayList<Account> getAccounts() {return account_id;}
+	public String getlast_name() {return last_name;}
+	public String getcity() {return city;}
+
+	public int getStreet_number() {return street_number;}
+	public int getZip() {return zip;}
+	public String getstate() {return state;}
+	public String getstreet() {return street_name; }
+
 	
-	
-	public static ArrayList<Customer> createList(URL url, HashMap<String,Account> customerMap) throws IOException{
+	public static HashMap<String,Customer> createMap(URL url) throws IOException{
 		URLConnection myURLConnection = url.openConnection();
 		try {
 			myURLConnection.connect();
@@ -50,8 +60,8 @@ public class Customer {
 		BufferedReader in = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
 		String jsonText = readAll(in);
 		JSONObject json = new JSONObject(jsonText);
-		return createList(json, customerMap);
-	}
+		return createMap(json);
+		}
 	
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
@@ -62,9 +72,10 @@ public class Customer {
 		return sb.toString();
 	}
 	
-	public static ArrayList<Customer> createList(JSONObject json, HashMap<String,Account> customerMap){
+	public static HashMap<String, Customer> createMap(JSONObject json){
 		JSONArray ja = json.getJSONArray("results");
-		ArrayList<Customer> c = new ArrayList<>();
+		HashMap<String, Customer> c = new HashMap<String, Customer>();
+		
 		for (int i = 0; i < ja.length(); i++) {
 			JSONObject temp = ja.getJSONObject(i);
 			String id = temp.getString("_id");
@@ -78,7 +89,9 @@ public class Customer {
 			int m = Integer.parseInt(n2.substring(0));
 			String sta = temp.getString("state");
 			String str = temp.getString("street_name");
-			c.add(new Customer(id,fn, a, ln, g,y,m,sta,str));
+			Customer cust= new Customer(id,fn, a, ln, g,y,m,sta,str);
+			c.put(id,cust);
+			
 		}
 		return c;
 	}
