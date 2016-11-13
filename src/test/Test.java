@@ -32,12 +32,31 @@ public class Test {
 			String jsonText = readAll(in);
 			JSONObject json = new JSONObject(jsonText);
 
-			
-			HashMap<String, Customer> customers = Customer.createMap(customerURL);
+			// HashMap<String, Customer> customers =
+			// Customer.createMap(customerURL);
 			HashMap<String, Account> a = Account.createMap(json);
 			ArrayList<Transfer> b = Transfer.createList(transferURL, a);
 
+			HashMap<Account, ArrayList<Transfer>> map = new HashMap<>();
+			for (Object x : a.keySet().toArray()) {
+				map.put(((Account) (a.get(x))), new ArrayList<>());
+			}
+			for (Transfer x : b) {
+				try {
+					map.get(x.getPayee()).add(x);
+					map.get(x.getPayer()).add(x);
+				} catch (NullPointerException e) {}
+			}
 			
+			/*
+			int i = 0;
+			while(map.get(map.keySet().toArray()[i]).size()==0){
+				i++;
+			}
+			
+			System.out.println();
+			System.out.println(map.get(map.keySet().toArray()[i]).get(0).getAmount());
+			*/
 			
 			/*
 			 * for (Object x : a.keySet().toArray()) {
@@ -46,11 +65,13 @@ public class Test {
 			 * }
 			 */
 
+			/*
 			for (Transfer x : b) {
 				System.out.println(x.getDescription());
 
 			}
-
+			*/
+			
 		} catch (
 
 		MalformedURLException e) {
