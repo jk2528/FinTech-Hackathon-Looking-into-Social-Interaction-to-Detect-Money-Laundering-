@@ -716,6 +716,7 @@ public class JSONObject {
      */
     public String getString(String key) throws JSONException {
         Object object = this.get(key);
+        System.out.println(object);
         if (object instanceof String) {
             return (String) object;
         }

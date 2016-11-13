@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -29,12 +30,14 @@ public class Test {
 			ArrayList<Transfer> b = Transfer.createList(
 					new URL("http://api.reimaginebanking.com/enterprise/transfers?key=358d729f3e85f5d73acd2790b0ae32b6"),
 					a);
+			
 			/*
 			for (Object x : a.keySet().toArray()) {
 				System.out.println(((Account) (a.get(x))).getNickname());
 
 			}
 			*/
+			
 			
 			for (Object x : b) {
 				System.out.println(((Account) (a.get(x))).getNickname());
