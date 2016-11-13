@@ -54,6 +54,11 @@ public class Transfer {
 	public int getDay() {return day;}
 	public Account getPayee() {return payeeAccount;}
 	public Account getPayer() {return payerAccount;}
+	public Account getOppositeAccount(Account a){
+		if (a == payeeAccount) return payerAccount;
+		if (a == payerAccount) return payeeAccount;
+		return null;
+	}
 	
 	
 	

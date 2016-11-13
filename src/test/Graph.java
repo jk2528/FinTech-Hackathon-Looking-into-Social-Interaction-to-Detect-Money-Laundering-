@@ -12,7 +12,7 @@ public class Graph {
 		AccToTran = AccTran;
 		for(String key : Accountmap.keySet()){
 			nodes.add(new Node(Accountmap.get(key),(int)Math.random()*2000,(int)Math.random()*2000));
-		}
+		} 	 
 	}
 	public class Node{
 		Account account;
