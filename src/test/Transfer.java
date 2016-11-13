@@ -52,6 +52,8 @@ public class Transfer {
 	public int getYear() {return year;}
 	public int getMonth() {return month;}
 	public int getDay() {return day;}
+	public Account getPayee() {return payeeAccount;}
+	public Account getPayer() {return payerAccount;}
 	
 	
 	
